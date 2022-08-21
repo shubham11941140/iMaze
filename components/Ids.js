@@ -145,7 +145,7 @@ export default class Bfs extends Component {
 
   randomize () {
     // Test start
-    console.log('random Ran')
+    
     const visitedNodesInOrder = []
     const grid = generateMaze(FINISH_NODE_ROW + 1, FINISH_NODE_COL + 1)
     const stack = []
@@ -175,7 +175,7 @@ export default class Bfs extends Component {
       }
     }
 
-    console.log('Random End')
+    
 
     // Test end
     this.setState({ grid, stack, visitedNodesInOrder })
