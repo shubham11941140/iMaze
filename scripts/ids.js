@@ -1,89 +1,91 @@
-import { getUnvisitedNeighbors } from "./utils";
+import { getUnvisitedNeighbors } from './utils'
 
-export function ids(grid, startNode, finishNode) {
+export function ids (grid, startNode, finishNode) {
+  const visitedNodesInOrderList = []
+  const hasFound = { val: false }
+  let limit = 1
 
-    let visitedNodesInOrderList = [];
-    let hasFound = { val: false };
-    let limit = 1;
+  while (!hasFound.val) {
+    const visitedNodesInOrder = dfs(
+      grid,
+      startNode,
+      finishNode,
+      limit,
+      hasFound
+    )
 
-    while (!hasFound.val) {
-
-        let visitedNodesInOrder = dfs(grid, startNode, finishNode, limit, hasFound);
-
-        for (let row = 0; row < grid.length; row++) {
-            for (let col = 0; col < grid[row].length; col++) {
-                grid[row][col].isVisited = false;
-            }
-        }
-
-        visitedNodesInOrderList.push(visitedNodesInOrder);
-        limit += 1;
+    for (let row = 0; row < grid.length; row++) {
+      for (let col = 0; col < grid[row].length; col++) {
+        grid[row][col].isVisited = false
+      }
     }
-    return visitedNodesInOrderList;
+
+    visitedNodesInOrderList.push(visitedNodesInOrder)
+    limit += 1
+  }
+  return visitedNodesInOrderList
 }
 
-function dfs(grid, startNode, finishNode, limit, hasFound) {
+function dfs (grid, startNode, finishNode, limit, hasFound) {
+  const visitedNodesInOrder = []
 
-    const visitedNodesInOrder = [];
+  // Create a Stack and add our initial node in it
+  const stack = []
+  startNode.distance = 0
+  stack.push(startNode)
 
-    // Create a Stack and add our initial node in it
-    let stack = [];
-    startNode.distance = 0;
-    stack.push(startNode);
+  // We'll continue till our queue gets empty
+  while (!(stack.length === 0)) {
+    const currentNode = stack.pop()
 
-    // We'll continue till our queue gets empty
-    while (!(stack.length === 0)) {
+    if (!currentNode.isVisited) {
+      currentNode.isVisited = true
 
-        let currentNode = stack.pop();
+      if (currentNode.isWall) continue
 
-        if (!currentNode.isVisited) {
+      visitedNodesInOrder.push(currentNode)
 
-            currentNode.isVisited = true;
+      if (
+        currentNode.row === finishNode.row &&
+        currentNode.col === finishNode.col
+      ) {
+        hasFound.val = true
+        return visitedNodesInOrder
+      }
 
-            if (currentNode.isWall) continue;
+      const unvisitedNeighbors = getUnvisitedNeighbors(currentNode, grid)
+      unvisitedNeighbors.filter((neighbor) => !neighbor.isWall)
 
-            visitedNodesInOrder.push(currentNode);
+      if (currentNode.distance + 1 >= limit) continue
 
-            if (currentNode.row === finishNode.row && currentNode.col === finishNode.col) {
-                hasFound.val = true;
-                return visitedNodesInOrder;
-            }
-
-            let unvisitedNeighbors = getUnvisitedNeighbors(currentNode, grid);
-            unvisitedNeighbors.filter((neighbor) => !neighbor.isWall);
-
-            if (currentNode.distance + 1 >= limit) continue;
-
-            for (const neighbor of unvisitedNeighbors) {
-                neighbor.distance = currentNode.distance + 1;
-                neighbor.previousNode = currentNode;
-                stack.push(neighbor);
-            }
-        }
+      for (const neighbor of unvisitedNeighbors) {
+        neighbor.distance = currentNode.distance + 1
+        neighbor.previousNode = currentNode
+        stack.push(neighbor)
+      }
     }
-    return visitedNodesInOrder;
+  }
+  return visitedNodesInOrder
 }
 
-export function dfsStep(stack, visitedNodesInOrder, grid) {
+export function dfsStep (stack, visitedNodesInOrder, grid) {
+  if (!(stack.length === 0)) {
+    const currentNode = stack.pop()
 
-    if (!(stack.length === 0)) {
+    currentNode.isVisited = true
 
-        let currentNode = stack.pop();
+    if (currentNode.isWall) return currentNode
 
-        currentNode.isVisited = true;
+    visitedNodesInOrder.push(currentNode)
 
-        if (currentNode.isWall) return currentNode;
+    const unvisitedNeighbors = getUnvisitedNeighbors(currentNode, grid)
+    unvisitedNeighbors.filter((neighbor) => !neighbor.isWall)
 
-        visitedNodesInOrder.push(currentNode);
-
-        let unvisitedNeighbors = getUnvisitedNeighbors(currentNode, grid);
-        unvisitedNeighbors.filter((neighbor) => !neighbor.isWall);
-
-        for (const neighbor of unvisitedNeighbors) {
-            neighbor.distance = currentNode.distance + 1;
-            neighbor.previousNode = currentNode;
-            stack.push(neighbor);
-        }
-        return currentNode;
+    for (const neighbor of unvisitedNeighbors) {
+      neighbor.distance = currentNode.distance + 1
+      neighbor.previousNode = currentNode
+      stack.push(neighbor)
     }
+    return currentNode
+  }
 }

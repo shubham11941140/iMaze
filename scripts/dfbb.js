@@ -1,101 +1,105 @@
-import { getUnwalledNeighbors } from "./utils";
+import { getUnwalledNeighbors } from './utils'
 
-export function dfbb(grid, startNode, finishNode) {
+export function dfbb (grid, startNode, finishNode) {
+  const visitedNodesInOrder = []
 
-    const visitedNodesInOrder = [];
+  // Create a Queue and add our initial node in it
+  const openList = []
+  let bestCost = Infinity
+  startNode.distance = 0
+  openList.push(startNode)
+  startNode.isVisited = true
 
-    // Create a Queue and add our initial node in it
-    let openList = [];
-    let bestCost = Infinity;
-    startNode.distance = 0;
-    openList.push(startNode);
-    startNode.isVisited = true;
+  // We'll continue till our queue gets empty
+  while (!(openList.length === 0)) {
+    const currentNode = openList.shift()
 
-    // We'll continue till our queue gets empty
-    while (!(openList.length === 0)) {
+    if (currentNode.isWall) continue
 
-        let currentNode = openList.shift();
+    visitedNodesInOrder.push(currentNode)
 
-        if (currentNode.isWall) continue;
+    if (currentNode.distance >= bestCost) continue
 
-        visitedNodesInOrder.push(currentNode);
-
-        if (currentNode.distance >= bestCost) continue;
-
-        if (currentNode.row === finishNode.row && currentNode.col === finishNode.col) {
-
-            if (openList.length == 0) return visitedNodesInOrder;
-
-            else {
-                bestCost = Math.min(bestCost, currentNode.distance);
-                continue;
-            }
-        }
-
-        let unwalledNeighbors = getUnwalledNeighbors(currentNode, grid);
-
-        for (const neighbor of unwalledNeighbors) {
-
-            if (currentNode.previousNode.row == neighbor.row && currentNode.previousNode.col == neighbor.col) continue;
-
-            if (openList.includes(neighbor)) {
-
-                if (currentNode.distance + 1 >= neighbor.distance) continue;
-
-                else {
-                    neighbor.distance = currentNode.distance + 1;
-                    neighbor.previousNode = currentNode;
-                    continue;
-                }
-            }
-
-            neighbor.distance = currentNode.distance + 1;
-            neighbor.previousNode = currentNode;
-            neighbor.isVisited = true;
-            openList.unshift(neighbor);
-        }
+    if (
+      currentNode.row === finishNode.row &&
+      currentNode.col === finishNode.col
+    ) {
+      if (openList.length == 0) return visitedNodesInOrder
+      else {
+        bestCost = Math.min(bestCost, currentNode.distance)
+        continue
+      }
     }
-    return visitedNodesInOrder;
+
+    const unwalledNeighbors = getUnwalledNeighbors(currentNode, grid)
+
+    for (const neighbor of unwalledNeighbors) {
+      if (
+        currentNode.previousNode.row == neighbor.row &&
+        currentNode.previousNode.col == neighbor.col
+      ) {
+        continue
+      }
+
+      if (openList.includes(neighbor)) {
+        if (currentNode.distance + 1 >= neighbor.distance) continue
+        else {
+          neighbor.distance = currentNode.distance + 1
+          neighbor.previousNode = currentNode
+          continue
+        }
+      }
+
+      neighbor.distance = currentNode.distance + 1
+      neighbor.previousNode = currentNode
+      neighbor.isVisited = true
+      openList.unshift(neighbor)
+    }
+  }
+  return visitedNodesInOrder
 }
 
-export function dfbbStep(
-    openList,
-    bestCost,
-    visitedNodesInOrder,
-    grid,
-    finishNode
+export function dfbbStep (
+  openList,
+  bestCost,
+  visitedNodesInOrder,
+  grid,
+  finishNode
 ) {
+  if (!(openList.length === 0)) {
+    const currentNode = openList.shift()
 
-    if (!(openList.length === 0)) {
+    if (currentNode.isWall) return currentNode
 
-        let currentNode = openList.shift();
+    visitedNodesInOrder.push(currentNode)
 
-        if (currentNode.isWall) return currentNode;
+    if (currentNode.distance >= bestCost) return
 
-        visitedNodesInOrder.push(currentNode);
-
-        if (currentNode.distance >= bestCost) return;
-
-        if (currentNode.row === finishNode.row && currentNode.col === finishNode.col) {
-
-            if (openList.length == 0) return visitedNodesInOrder;
-
-            else {
-                bestCost = Math.min(bestCost, currentNode.distance);
-            }
-        }
-
-        let unvisitedNeighbors = getUnwalledNeighbors(currentNode, grid);
-
-        for (const neighbor of unvisitedNeighbors) {
-
-            if (currentNode.previousNode.row == neighbor.row && currentNode.previousNode.col == neighbor.col) continue;
-
-            neighbor.distance = currentNode.distance + 1;
-            neighbor.previousNode = currentNode;
-            neighbor.isVisited = true;
-            openList.unshift(neighbor);
-        }
-        return currentNode;
+    if (
+      currentNode.row === finishNode.row &&
+      currentNode.col === finishNode.col
+    ) {
+      if (openList.length == 0) return visitedNodesInOrder
+      else {
+        bestCost = Math.min(bestCost, currentNode.distance)
+      }
     }
+
+    const unvisitedNeighbors = getUnwalledNeighbors(currentNode, grid)
+
+    for (const neighbor of unvisitedNeighbors) {
+      if (
+        currentNode.previousNode.row == neighbor.row &&
+        currentNode.previousNode.col == neighbor.col
+      ) {
+        continue
+      }
+
+      neighbor.distance = currentNode.distance + 1
+      neighbor.previousNode = currentNode
+      neighbor.isVisited = true
+      openList.unshift(neighbor)
+    }
+    return currentNode
+  }
 }

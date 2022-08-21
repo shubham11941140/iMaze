@@ -1,6 +1,6 @@
-function ConfigComponent() {
+function ConfigComponent () {
   return (
-    <div className="flex flex-initial w-44 flex-col p-4 m-2 border-2 border-black rounded-lg">
+    <div className='flex flex-initial w-44 flex-col p-4 m-2 border-2 border-black rounded-lg'>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi incidunt
         repellat molestiae dolorem sed aut, numquam inventore, aliquam autem,
@@ -10,7 +10,7 @@ function ConfigComponent() {
         molestiae? Nam, similique ea!
       </p>
     </div>
-  );
+  )
 }
 
-export default ConfigComponent;
+export default ConfigComponent
