@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 
 export default class Node extends Component {
-  render() {
+  render () {
     const {
       col,
       isFinish,
@@ -10,15 +10,15 @@ export default class Node extends Component {
       row,
       onMouseDown,
       onMouseEnter,
-      onMouseUp,
-    } = this.props;
+      onMouseUp
+    } = this.props
     const extraClassName = isFinish
-      ? "bg-blue-500"
+      ? 'bg-blue-500'
       : isStart
-      ? "bg-green-500"
-      : isWall
-      ? "bg-black"
-      : "bg-slate-200";
+        ? 'bg-green-500'
+        : isWall
+          ? 'bg-black'
+          : 'bg-slate-200'
 
     return (
       <div
@@ -27,7 +27,7 @@ export default class Node extends Component {
         onMouseDown={() => onMouseDown(row, col)}
         onMouseEnter={() => onMouseEnter(row, col)}
         onMouseUp={() => onMouseUp()}
-       />
-    );
+      />
+    )
   }
 }
