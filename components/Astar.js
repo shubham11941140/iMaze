@@ -267,7 +267,7 @@ export default class Astar extends Component {
                           this.handleMouseEnter(row, col)
                         }
                         onMouseUp={() => this.handleMouseUp()}
-                      ></Node>
+                       />
                     );
                   })}
                 </div>

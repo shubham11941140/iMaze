@@ -268,7 +268,7 @@ export default class GreedyBfs extends Component {
                           this.handleMouseEnter(row, col)
                         }
                         onMouseUp={() => this.handleMouseUp()}
-                      ></Node>
+                       />
                     );
                   })}
                 </div>

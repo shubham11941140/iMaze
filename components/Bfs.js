@@ -263,7 +263,7 @@ export default class Bfs extends Component {
                           this.handleMouseEnter(row, col)
                         }
                         onMouseUp={() => this.handleMouseUp()}
-                      ></Node>
+                       />
                     );
                   })}
                 </div>

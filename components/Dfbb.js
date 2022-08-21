@@ -279,7 +279,7 @@ export default class Dfbb extends Component {
                           this.handleMouseEnter(row, col)
                         }
                         onMouseUp={() => this.handleMouseUp()}
-                      ></Node>
+                       />
                     );
                   })}
                 </div>

@@ -256,7 +256,7 @@ export default class PathfindingVisualizer extends Component {
                           this.handleMouseEnter(row, col)
                         }
                         onMouseUp={() => this.handleMouseUp()}
-                      ></Node>
+                       />
                     );
                   })}
                 </div>
